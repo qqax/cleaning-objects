@@ -11,16 +11,21 @@ export const removeEmptyObjects = (obj: Record<string, any>): Record<string, any
 
 export function cleanObject(
     obj: Record<string, any>,
-    keep?: (`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject')[]
+    keep?:  Set<`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject'>
 ): Record<string, any> {
-    const keepArray = keep?.includes("array");
-    const keepString = keep?.includes("string");
-    const keepNull = keep?.includes("null");
-    const keepUndefined = keep?.includes("undefined");
-    const keepNaN = keep?.includes("NaN");
-    const keepInfinity = keep?.includes("Infinity");
-    const keepEmptyObject = keep?.includes("emptyObject");
-    const keepEmbeddedObject = keep?.includes("embeddedObject");
+
+    if (!keep || keep.size === 0) {
+        return cleanAll(obj);
+    }
+
+    const keepArray = keep?.has("array");
+    const keepString = keep?.has("string");
+    const keepNull = keep?.has("null");
+    const keepUndefined = keep?.has("undefined");
+    const keepNaN = keep?.has("NaN");
+    const keepInfinity = keep?.has("Infinity");
+    const keepEmptyObject = keep?.has("emptyObject");
+    const keepEmbeddedObject = keep?.has("embeddedObject");
 
     return cleaner(obj, keepArray, keepString, keepNull, keepUndefined, keepNaN, keepInfinity, keepEmptyObject, keepEmbeddedObject)
 }
@@ -64,7 +69,7 @@ function cleaner(obj: Record<string, any>,
         }, {});
 }
 
-export function clearObject(obj: Record<string, any>): Record<string, any> {
+function cleanAll(obj: Record<string, any>): Record<string, any> {
     return Object.entries(obj)
         .reduce((acc: Record<string, any>, [key, value]) => {
             if (value == null ||
@@ -77,7 +82,7 @@ export function clearObject(obj: Record<string, any>): Record<string, any> {
             }
 
             if (Object.getPrototypeOf(value).isPrototypeOf(Object)) {
-                const newObj = clearObject(value);
+                const newObj = cleanAll(value);
 
                 if (Object.keys(newObj).length > 0) {
                     acc[key] = newObj;

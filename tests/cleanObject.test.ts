@@ -27,6 +27,7 @@ const obj = {
         k: Infinity,
         l: {},
     },
+    o: {a: {}},
 }
 
 test('clear all empty values in the object', () => {
@@ -48,8 +49,27 @@ test('clear all empty values in the object', () => {
     expect(result).toStrictEqual(testObj);
 });
 
+test('clear all empty values in the object if keep array is empty', () => {
+    const result = cleanObject(obj, new Set());
+    const testObj = {
+        a: 1,
+        b: "2",
+        c: true,
+        d: false,
+        e: [5],
+        m: {
+            a: 1,
+            b: "2",
+            c: true,
+            d: false,
+            e: [5],
+        },
+    }
+    expect(result).toStrictEqual(testObj);
+});
+
 test('clear all empty values in the object except array', () => {
-    const result = cleanObject(obj, ['array']);
+    const result = cleanObject(obj, new Set(['array']));
     const testObj = {
         a: 1,
         b: "2",
@@ -64,13 +84,13 @@ test('clear all empty values in the object except array', () => {
             d: false,
             e: [5],
             f: [],
-        }
+        },
     }
     expect(result).toStrictEqual(testObj);
 });
 
 test('clear all empty values in the object except strings', () => {
-    const result = cleanObject(obj, ['string']);
+    const result = cleanObject(obj, new Set(['string']));
     const testObj = {
         a: 1,
         b: "2",
@@ -91,7 +111,7 @@ test('clear all empty values in the object except strings', () => {
 });
 
 test('clear all empty values in the object except null', () => {
-    const result = cleanObject(obj, ['null']);
+    const result = cleanObject(obj, new Set(['null']));
     const testObj = {
         a: 1,
         b: "2",
@@ -112,7 +132,7 @@ test('clear all empty values in the object except null', () => {
 });
 
 test('clear all empty values in the object except undefined', () => {
-    const result = cleanObject(obj, ['undefined']);
+    const result = cleanObject(obj, new Set(['undefined']));
     const testObj = {
         a: 1,
         b: "2",
@@ -133,7 +153,7 @@ test('clear all empty values in the object except undefined', () => {
 });
 
 test('clear all empty values in the object except NaN', () => {
-    const result = cleanObject(obj, ['NaN']);
+    const result = cleanObject(obj, new Set(['NaN']));
     const testObj = {
         a: 1,
         b: "2",
@@ -154,7 +174,7 @@ test('clear all empty values in the object except NaN', () => {
 });
 
 test('clear all empty values in the object except Infinity', () => {
-    const result = cleanObject(obj, ['Infinity']);
+    const result = cleanObject(obj, new Set(['Infinity']));
     const testObj = {
         a: 1,
         b: "2",
@@ -175,7 +195,7 @@ test('clear all empty values in the object except Infinity', () => {
 });
 
 test('clear all empty values in the object except empty object', () => {
-    const result = cleanObject(obj, ['emptyObject']);
+    const result = cleanObject(obj, new Set(['emptyObject']));
     const testObj = {
         a: 1,
         b: "2",
@@ -190,13 +210,14 @@ test('clear all empty values in the object except empty object', () => {
             d: false,
             e: [5],
             l: {},
-        }
+        },
+        o: {a: {}},
     }
     expect(result).toStrictEqual(testObj);
 });
 
 test('clear all empty values in the object except embedded object', () => {
-    const result = cleanObject(obj, ['embeddedObject']);
+    const result = cleanObject(obj, new Set(['embeddedObject']));
     const testObj = {
         a: 1,
         b: "2",
@@ -218,6 +239,7 @@ test('clear all empty values in the object except embedded object', () => {
             k: Infinity,
             l: {},
         },
+        o: {a: {}},
     }
     expect(result).toStrictEqual(testObj);
 });
