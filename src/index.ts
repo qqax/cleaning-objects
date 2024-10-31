@@ -13,16 +13,14 @@ export function cleanObject(
         return cleanAll(obj);
     }
 
-    const keepSet = new Set<`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject'>(keep)
-
-    const keepArray = keepSet.has("array");
-    const keepString = keepSet.has("string");
-    const keepNull = keepSet.has("null");
-    const keepUndefined = keepSet.has("undefined");
-    const keepNaN = keepSet.has("NaN");
-    const keepInfinity = keepSet.has("Infinity");
-    const keepEmptyObject = keepSet.has("emptyObject");
-    const keepEmbeddedObject = keepSet.has("embeddedObject");
+    const keepArray = keep.includes("array");
+    const keepString = keep.includes("string");
+    const keepNull = keep.includes("null");
+    const keepUndefined = keep.includes("undefined");
+    const keepNaN = keep.includes("NaN");
+    const keepInfinity = keep.includes("Infinity");
+    const keepEmptyObject = keep.includes("emptyObject");
+    const keepEmbeddedObject = keep.includes("embeddedObject");
 
     return cleaner(obj, keepArray, keepString, keepNull, keepUndefined, keepNaN, keepInfinity, keepEmptyObject, keepEmbeddedObject)
 }
