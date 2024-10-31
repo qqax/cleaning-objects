@@ -2,7 +2,12 @@
   "name": "cleaning-objects",
   "version": "1.0.0",
   "description": "This package allows you to recursively clean objects from empty keys (NULL values, empty objects, strings and arrays), filter objects using a callback function.",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "jest"

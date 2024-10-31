@@ -92,8 +92,8 @@ result will be {
 }
 */
 ```
-You can also create a Set specifying which data types you want to exclude from processing:
+You can also create an array specifying which data types you want to exclude from processing:
 
 ```javascript
-cleanObject(obj, new Set([`array`, `string`, `null`, `undefined`, `NaN`, `Infinity`, 'emptyObject', 'embeddedObject']));
+cleanObject(obj, [`array`, `string`, `null`, `undefined`, `NaN`, `Infinity`, 'emptyObject', 'embeddedObject']);
 ```

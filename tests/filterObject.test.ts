@@ -1,4 +1,4 @@
-import {filterObject, KeyValueTuple} from '../src';
+import {filterObject} from '../src';
 
 const obj = {
     a: 1,
@@ -30,8 +30,7 @@ const obj = {
 }
 
 test('clear all empty objects in the object', () => {
-    const callback = (args:KeyValueTuple) => {
-        const [key, value] = args;
+    const callback = ([key, value]: [string, any]) => {
         return key === 'a' || value === Infinity;
     }
     const result = filterObject(obj, callback)

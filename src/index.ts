@@ -1,31 +1,28 @@
-export interface KeyValueTuple extends Array<string | any> {
-    0: string;
-    1: any
-}
-
-export const filterObject = (obj: Record<string, any>, callback: (arg: KeyValueTuple) => boolean): Record<string, any> =>
+export const filterObject = (obj: Record<string, any>, callback: (arg: [string, any]) => boolean): Record<string, any> =>
     Object.fromEntries(Object.entries(obj).filter(callback));
 
 export const removeEmptyObjects = (obj: Record<string, any>): Record<string, any> =>
-    filterObject(obj, ([_, value]: KeyValueTuple) => !value || !Object.getPrototypeOf(value).isPrototypeOf(Object) || Object.keys(value).length > 0);
+    filterObject(obj, ([_, value]) => !value || !Object.getPrototypeOf(value).isPrototypeOf(Object) || Object.keys(value).length > 0);
 
 export function cleanObject(
     obj: Record<string, any>,
-    keep?:  Set<`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject'>
+    keep?: (`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject')[],
 ): Record<string, any> {
 
-    if (!keep || keep.size === 0) {
+    if (!keep || keep.length === 0) {
         return cleanAll(obj);
     }
 
-    const keepArray = keep?.has("array");
-    const keepString = keep?.has("string");
-    const keepNull = keep?.has("null");
-    const keepUndefined = keep?.has("undefined");
-    const keepNaN = keep?.has("NaN");
-    const keepInfinity = keep?.has("Infinity");
-    const keepEmptyObject = keep?.has("emptyObject");
-    const keepEmbeddedObject = keep?.has("embeddedObject");
+    const keepSet = new Set<`array` | `string` | `null` | `undefined` | `NaN` | `Infinity` | 'emptyObject' | 'embeddedObject'>(keep)
+
+    const keepArray = keepSet.has("array");
+    const keepString = keepSet.has("string");
+    const keepNull = keepSet.has("null");
+    const keepUndefined = keepSet.has("undefined");
+    const keepNaN = keepSet.has("NaN");
+    const keepInfinity = keepSet.has("Infinity");
+    const keepEmptyObject = keepSet.has("emptyObject");
+    const keepEmbeddedObject = keepSet.has("embeddedObject");
 
     return cleaner(obj, keepArray, keepString, keepNull, keepUndefined, keepNaN, keepInfinity, keepEmptyObject, keepEmbeddedObject)
 }
